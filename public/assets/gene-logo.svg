@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" fill="none">
+  <!-- Outer Dark Shield Ring -->
+  <circle cx="256" cy="256" r="236" fill="#07090c" stroke="#19e3d0" stroke-width="8" stroke-dasharray="14 10" />
+  <circle cx="256" cy="256" r="216" stroke="#d9cfb8" stroke-width="3" opacity="0.4" />
+  
+  <!-- Outer Circular Text Ring -->
+  <circle cx="256" cy="256" r="248" stroke="#19e3d0" stroke-width="1.5" opacity="0.6" />
+  
+  <!-- Double Helix Backbone Intertwined with 'G' Motif -->
+  <!-- Upper & Outer Helix Arc forming the 'G' -->
+  <path d="M380 180 C350 110, 290 80, 220 80 C120 80, 60 160, 60 256 C60 352, 130 432, 230 432 C330 432, 410 360, 430 270 L240 270" 
+        stroke="#19e3d0" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
+        
+  <!-- Secondary Strand Intertwined (DNA Helix Loop) -->
+  <path d="M120 200 C150 130, 250 110, 320 150 C390 190, 420 270, 390 340 C360 410, 260 420, 180 390" 
+        stroke="#d9cfb8" stroke-width="14" stroke-dasharray="8 6" stroke-linecap="round" opacity="0.85"/>
+
+  <!-- Nucleotide Base Pair Bridges (Ladder rungs across the G) -->
+  <line x1="160" y1="180" x2="230" y2="130" stroke="#19e3d0" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="160" cy="180" r="10" fill="#b3202a" />
+  <circle cx="230" cy="130" r="10" fill="#19e3d0" />
+
+  <line x1="110" y1="260" x2="240" y2="260" stroke="#d9cfb8" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="110" cy="260" r="10" fill="#19e3d0" />
+  <circle cx="240" cy="260" r="10" fill="#b3202a" />
+
+  <line x1="160" y1="340" x2="240" y2="390" stroke="#19e3d0" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="160" cy="340" r="10" fill="#b3202a" />
+  <circle cx="240" cy="390" r="10" fill="#19e3d0" />
+
+  <line x1="280" y1="340" x2="350" y2="380" stroke="#d9cfb8" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="280" cy="340" r="10" fill="#19e3d0" />
+  <circle cx="350" cy="380" r="10" fill="#b3202a" />
+
+  <!-- Center Core Terminal Point -->
+  <circle cx="256" cy="256" r="16" fill="#b3202a" stroke="#ffffff" stroke-width="3"/>
+  <circle cx="256" cy="256" r="8" fill="#19e3d0"/>
+
+  <!-- Technical Monospace Labels inside Mark -->
+  <text x="256" y="475" text-anchor="middle" font-family="monospace" font-size="19" font-weight="bold" fill="#d9cfb8" letter-spacing="4">GENE // THAPAR INSTITUTE</text>
+</svg>
