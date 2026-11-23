@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import {
   getSortedAnnouncements,
   createAnnouncement,
@@ -9,6 +10,7 @@ import {
 import { isAuthenticatedOrganiser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 /**
  * GET: Public endpoint returning current intel dispatches.
@@ -48,19 +50,37 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const body = await req.json();
+    let body: Record<string, unknown> = {};
+    try {
+      body = await req.json();
+    } catch (parseErr) {
+      console.warn("[Announcements POST] Failed to parse JSON body:", parseErr);
+      return NextResponse.json(
+        { error: "INVALID PAYLOAD: EXPECTED JSON FORMAT" },
+        { status: 400 }
+      );
+    }
+
     const { title, message, category, eventDate, pinned } = body;
 
     const result = await createAnnouncement({
-      title,
-      message,
+      title: typeof title === "string" ? title : "",
+      message: typeof message === "string" ? message : "",
       category: category as AnnouncementCategory,
-      eventDate,
+      eventDate: typeof eventDate === "string" ? eventDate : undefined,
       pinned: Boolean(pinned),
     });
 
     if (!result.success) {
       return NextResponse.json({ error: result.error }, { status: 400 });
+    }
+
+    // Force purge client route caches so participants see new dispatch immediately
+    try {
+      revalidatePath("/participant");
+      revalidatePath("/api/announcements");
+    } catch {
+      // Non-critical in local runtimes
     }
 
     return NextResponse.json(
@@ -73,8 +93,9 @@ export async function POST(req: NextRequest) {
     );
   } catch (err) {
     console.error("[Announcements POST] Error:", err);
+    const detail = err instanceof Error ? err.message : "DISPATCH CORRUPTED";
     return NextResponse.json(
-      { error: "TRANSMISSION ERROR: DISPATCH CORRUPTED" },
+      { error: `TRANSMISSION ERROR: ${detail}` },
       { status: 500 }
     );
   }
@@ -120,6 +141,13 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
+    try {
+      revalidatePath("/participant");
+      revalidatePath("/api/announcements");
+    } catch {
+      // Non-critical
+    }
+
     return NextResponse.json({
       success: true,
       message: "DISPATCH EXPUNGED FROM FORENSIC LOGS",
@@ -157,6 +185,13 @@ export async function PATCH(req: NextRequest) {
     const updated = await togglePinAnnouncement(id);
     if (!updated) {
       return NextResponse.json({ error: "DISPATCH RECORD NOT FOUND" }, { status: 404 });
+    }
+
+    try {
+      revalidatePath("/participant");
+      revalidatePath("/api/announcements");
+    } catch {
+      // Non-critical
     }
 
     return NextResponse.json({
